@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Learning Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url('BG_IMG.png');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            margin: 0;
+        }
+        /* Style for logo */
+        .navbar-brand img {
+            height: 80px;
+            width: auto;
+        }
+        /* Style for course cards */
+        .course-card {
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            background: #fff;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .course-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.4);
+        }
+        /* Style for course card image */
+        .course-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        /* Style for course card content */
+        .course-card .content {
+            padding: 20px;
+            flex-grow: 1;
+        }
+        /* Style for course card title */
+        .course-card .title {
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        /* Style for course card description */
+        .course-card .description {
+            font-size: 16px;
+            color: #555;
+        }
+        
+    </style>
+</head>
+<body>
+
+        
+    <header class="bg-primary text-white text-center py-3">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">
+                    <img src="images.png" alt="E-Learning Logo">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="register.html">Register</a></li>
+                        <li class="nav-item"><a class="nav-link" href="login.html">Student Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="instructor-login.html">Instructor Login</a></li>
+                        <li class="nav-item"><a class="nav-link" href="add-course.html">Add Course</a></li>
+                        <li class="nav-item"><a class="nav-link" href="edit-course.html">Edit Course</a></li>
+                        <li class="nav-item"><a class="nav-link" href="student-viewcourse.html">Student View Course</a></li>
+                        <li class="nav-item"><a class="nav-link" href="quiz_system.html">Take Quiz</a></li>
+                        <li class="nav-item"><a class="nav-link" href="feedback.html">Submit Feedback</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <main class="container mt-4 text-center">
+        <h2>Explore our Postgraduate Courses</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-4 mb-4">
+                <div class="course-card">
+                    <img src="mtech.jpg" alt="M.Tech Image">
+                    <div class="content">
+                        <h3 class="title">M.Tech in Computer Science & Engineering</h3>
+                        <p class="description">Specialization in Computer Science & Engineering.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="course-card">
+                    <img src="download1.jpg" alt="MBA Image">
+                    <div class="content">
+                        <h3 class="title">MBA</h3>
+                        <p class="description">A flagship program at AMC Engineering College.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="course-card">
+                    <img src="mca.jpg" alt="MCA Image">
+                    <div class="content">
+                        <h3 class="title">MCA</h3>
+                        <p class="description">High salary potential course.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="mt-5">Explore our Undergraduate Programs</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-4 mb-4">
+                <div class="course-card">
+                    <img src="Airo.jpg" alt="Aeronautical Engineering">
+                    <div class="content">
+                        <h3 class="title">Aeronautical Engineering</h3>
+                        <p class="description">Design and develop aircraft and spacecraft.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="course-card">
+                    <img src="civil.jpg" alt="Civil Engineering">
+                    <div class="content">
+                        <h3 class="title">Civil Engineering</h3>
+                        <p class="description">Infrastructure, bridges, and urban development.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="course-card">
+                    <img src="cse.jpg" alt="CSE">
+                    <div class="content">
+                        <h3 class="title">Computer Science & Engineering</h3>
+                        <p class="description">Software, AI, and system development.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="course-card">
+                    <img src="ece.jpg" alt="Electronics & Communication">
+                    <div class="content">
+                        <h3 class="title">Electronics & Communication Engineering</h3>
+                        <p class="description">Semiconductors and telecommunication.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="course-card">
+                    <img src="ise.jpg" alt="ISE">
+                    <div class="content">
+                        <h3 class="title">Information Science & Engineering</h3>
+                        <p class="description">Big data, cybersecurity, and networking.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="course-card">
+                    <img src="Mechanical Engineering.jpg" alt="Mechanical Engineering">
+                    <div class="content">
+                        <h3 class="title">Mechanical Engineering</h3>
+                        <p class="description">Machines, robotics, and manufacturing.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="course-card">
+                    <img src="mechatronicsA.jpg" alt="Mechatronics Engineering">
+                    <div class="content">
+                        <h3 class="title">Mechatronics Engineering</h3>
+                        <p class="description">Automation, robotics, and intelligent systems.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
