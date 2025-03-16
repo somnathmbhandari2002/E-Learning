@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Assignment - Instructor Panel</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 28px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            font-size: 16px;
+            color: #555;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #333;
+        }
+        .form-group textarea {
+            height: 150px;
+        }
+        .form-group button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .form-group button:hover {
+            background-color: #45a049;
+        }
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .error {
+            background-color: #f44336;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Create Assignment</h1>
+        <form id="assignment-form">
+            <div class="form-group">
+                <label for="instructor_id">Instructor ID</label>
+                <input type="text" id="instructor_id" name="instructor_id" required>
+            </div>
+            <div class="form-group">
+                <label for="course_name">Course Name</label>
+                <input type="text" id="course_name" name="course_name" required>
+            </div>
+            <div class="form-group">
+                <label for="subject_name">Subject Name</label>
+                <input type="text" id="subject_name" name="subject_name" required>
+            </div>
+            <div class="form-group">
+                <label for="lesson_name">Lesson Name</label>
+                <input type="text" id="lesson_name" name="lesson_name" required>
+            </div>
+            <div class="form-group">
+                <label for="questions">Questions (comma separated)</label>
+                <textarea id="questions" name="questions" required></textarea>
+            </div>
+            <div class="form-group">
+                <button type="submit">Create Assignment</button>
+            </div>
+        </form>
+
+        <div id="message" class="message" style="display:none;"></div>
+    </div>
+
+    <script>
+        // Handle form submission
+        document.getElementById('assignment-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const instructor_id = document.getElementById('instructor_id').value;
+            const course_name = document.getElementById('course_name').value;
+            const subject_name = document.getElementById('subject_name').value;
+            const lesson_name = document.getElementById('lesson_name').value;
+            const questions = document.getElementById('questions').value.split(',');
+
+            const data = {
+                instructor_id: instructor_id,
+                course_name: course_name,
+                subject_name: subject_name,
+                lesson_name: lesson_name,
+                questions: questions,
+                created_at: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/instructor/assignments', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+
+                if (response.ok) {
+                    showMessage('Assignment created successfully!', 'success');
+                } else {
+                    showMessage(`Error: ${result.detail || 'Something went wrong!'}`, 'error');
+                }
+            } catch (error) {
+                showMessage('Network error: Could not connect to the server', 'error');
+            }
+        });
+
+        // Function to display success/error message
+        function showMessage(message, type) {
+            const messageElement = document.getElementById('message');
+            messageElement.textContent = message;
+            messageElement.className = `message ${type}`;
+            messageElement.style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
