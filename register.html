@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <style>
+        /* Background styling */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: url('images/AMC1.jpg') no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Glassmorphism effect container */
+        .container {
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Input fields */
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        input, select {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        /* Register button */
+        button {
+            background: linear-gradient(135deg, #ff7eb3, #ff758c);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #ff758c, #ff5f6d);
+            transform: scale(1.05);
+        }
+
+        /* Success/Error message */
+        .message {
+            margin-top: 15px;
+            font-weight: bold;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Register</h2>
+        <input type="text" id="name" placeholder="Full Name" required>
+        <input type="email" id="email" placeholder="Email Address" required>
+        <select id="role">
+            <option value="student">Student</option>
+            <option value="instructor">Instructor</option>
+        </select>
+        <button onclick="registerUser()">Register</button>
+        <p class="message" id="responseMessage"></p>
+    </div>
+
+    <script>
+        async function registerUser() {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const role = document.getElementById("role").value;
+
+            if (!name || !email) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("name", name);
+            formData.append("email", email);
+            formData.append("role", role);
+
+            try {
+                const response = await fetch("http://127.0.0.1:8000/register", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    document.getElementById("responseMessage").innerText = result.message;
+                    document.getElementById("responseMessage").style.color = "lightgreen";
+
+                    // Redirect based on role after 2 seconds
+                    setTimeout(() => {
+                        if (role === "student") {
+                            window.location.href = "login.html";
+                        } else if (role === "instructor") {
+                            window.location.href = "instructor-login.html";
+                        }
+                    }, 2000);
+
+                } else {
+                    document.getElementById("responseMessage").innerText = result.detail || "Registration failed.";
+                    document.getElementById("responseMessage").style.color = "red";
+                }
+            } catch (error) {
+                document.getElementById("responseMessage").innerText = "Error registering user.";
+                document.getElementById("responseMessage").style.color = "red";
+            }
+        }
+    </script>
+
+</body>
+</html>
