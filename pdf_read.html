@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course PDFs</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #pdfContainer { border: 1px solid #ccc; margin: 20px auto; width: 80%; height: 500px; overflow: auto; }
+        canvas { width: 100%; }
+        button { margin: 10px; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h2>View Course PDFs</h2>
+    <label for="course">Course Name:</label>
+    <input type="text" id="course" placeholder="Enter Course Name">
+    <label for="subject">Subject Name:</label>
+    <input type="text" id="subject" placeholder="Enter Subject Name">
+    <button onclick="fetchPDFs()">Get PDFs</button>
+    <div id="pdfList"></div>
+    <div id="pdfContainer"></div>
+    <button onclick="readPDF()">Read PDF</button>
+
+    <script>
+        async function fetchPDFs() {
+            const course = document.getElementById("course").value;
+            const subject = document.getElementById("subject").value;
+            const response = await fetch(`/course/pdfs?course_name=${course}&subject_name=${subject}`);
+            const data = await response.json();
+            if (response.ok) {
+                displayPDFList(data.pdfs);
+            } else {
+                alert(data.detail);
+            }
+        }
+
+        function displayPDFList(pdfs) {
+            const pdfList = document.getElementById("pdfList");
+            pdfList.innerHTML = "";
+            pdfs.forEach(pdf => {
+                const btn = document.createElement("button");
+                btn.textContent = pdf;
+                btn.onclick = () => loadPDF(pdf);
+                pdfList.appendChild(btn);
+            });
+        }
+
+        async function loadPDF(pdfFilename) {
+            const url = `/pdfs/${pdfFilename}`;
+            const loadingTask = pdfjsLib.getDocument(url);
+            const pdf = await loadingTask.promise;
+            const page = await pdf.getPage(1);
+            const scale = 1.5;
+            const viewport = page.getViewport({ scale });
+            const canvas = document.createElement("canvas");
+            const context = canvas.getContext("2d");
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            document.getElementById("pdfContainer").innerHTML = "";
+            document.getElementById("pdfContainer").appendChild(canvas);
+            await page.render({ canvasContext: context, viewport }).promise;
+        }
+
+        async function readPDF() {
+            const textLayerDiv = document.createElement("div");
+            textLayerDiv.style.display = "none";
+            document.body.appendChild(textLayerDiv);
+            
+            const pdfText = await extractTextFromPDF();
+            const speech = new SpeechSynthesisUtterance(pdfText);
+            window.speechSynthesis.speak(speech);
+        }
+
+        async function extractTextFromPDF() {
+            const url = `/pdfs/sample.pdf`; // Change dynamically if needed
+            const loadingTask = pdfjsLib.getDocument(url);
+            const pdf = await loadingTask.promise;
+            let text = "";
+            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                const page = await pdf.getPage(pageNum);
+                const textContent = await page.getTextContent();
+                text += textContent.items.map(item => item.str).join(" ") + " ";
+            }
+            return text;
+        }
+    </script>
+</body>
+</html>
