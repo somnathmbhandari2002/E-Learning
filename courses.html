@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Course</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+        input, button, label {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: block;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .preview {
+            text-align: left;
+            margin-top: 10px;
+        }
+        .preview p {
+            font-weight: bold;
+        }
+        .preview-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .preview-list li {
+            background: #f0f0f0;
+            padding: 5px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Add Course</h2>
+        <input type="text" id="course_name" placeholder="Enter Course Name" required>
+        <input type="text" id="subject_name" placeholder="Enter Subject Name" required>
+        <input type="text" id="instructor_id" placeholder="Enter Instructor ID" required>
+
+        <label for="videos">Upload Videos:</label>
+        <input type="file" id="videos" multiple accept="video/*">
+        <div class="preview" id="videoPreview"></div>
+
+        <label for="pdfs">Upload PDFs:</label>
+        <input type="file" id="pdfs" multiple accept="application/pdf">
+        <div class="preview" id="pdfPreview"></div>
+
+        <button onclick="addCourse()">Add Course</button>
+        <p class="message" id="responseMessage"></p>
+    </div>
+
+    <script>
+        document.getElementById("videos").addEventListener("change", function() {
+            previewFiles("videos", "videoPreview");
+        });
+
+        document.getElementById("pdfs").addEventListener("change", function() {
+            previewFiles("pdfs", "pdfPreview");
+        });
+
+        function previewFiles(inputId, previewId) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            preview.innerHTML = "<p>Selected Files:</p>";
+            const list = document.createElement("ul");
+            list.classList.add("preview-list");
+
+            for (let i = 0; i < input.files.length; i++) {
+                const listItem = document.createElement("li");
+                listItem.textContent = input.files[i].name;
+                list.appendChild(listItem);
+            }
+
+            preview.appendChild(list);
+        }
+
+        async function addCourse() {
+            const courseName = document.getElementById("course_name").value;
+            const subjectName = document.getElementById("subject_name").value;
+            const instructorId = document.getElementById("instructor_id").value;
+            const videoFiles = document.getElementById("videos").files;
+            const pdfFiles = document.getElementById("pdfs").files;
+
+            if (!courseName || !subjectName || !instructorId || videoFiles.length === 0 || pdfFiles.length === 0) {
+                alert("Please fill all fields and upload at least one video and one PDF.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("course_name", courseName);
+            formData.append("subject_name", subjectName);
+            formData.append("instructor_id", instructorId);
+
+            for (let i = 0; i < videoFiles.length; i++) {
+                formData.append("videos", videoFiles[i]);
+            }
+            for (let i = 0; i < pdfFiles.length; i++) {
+                formData.append("pdfs", pdfFiles[i]);
+            }
+
+            try {
+                const response = await fetch("http://127.0.0.1:8000/courses", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    document.getElementById("responseMessage").innerText = "Course added successfully! Subject ID: " + result.subject_id;
+                    document.getElementById("responseMessage").style.color = "green";
+                } else {
+                    document.getElementById("responseMessage").innerText = result.detail || "Error adding course.";
+                    document.getElementById("responseMessage").style.color = "red";
+                }
+            } catch (error) {
+                document.getElementById("responseMessage").innerText = "Error connecting to server.";
+                document.getElementById("responseMessage").style.color = "red";
+            }
+        }
+    </script>
+
+</body>
+</html>
