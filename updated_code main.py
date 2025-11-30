@@ -26,7 +26,7 @@ import os
 
 app = FastAPI()
 
-# MongoDB connection
+#MongoDB connection
 client = MongoClient("mongodb://localhost:27017/")
 db = client["elearning_db"]
 users_collection = db["users"]
@@ -39,7 +39,7 @@ certificates_collection = db["certificates"]
 
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
 
-# Email Configuration
+#Email Configuration
 conf = ConnectionConfig(
     MAIL_USERNAME="snipetech.upl@gmail.com",
     MAIL_PASSWORD="ldqc wnak cdwl ozzh",
