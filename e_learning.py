@@ -16,7 +16,7 @@ from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
 
 app = FastAPI()
 
-# MongoDB connection
+#MongoDB connection
 client = MongoClient("mongodb://localhost:27017/")
 db = client["elearning_db"]
 
